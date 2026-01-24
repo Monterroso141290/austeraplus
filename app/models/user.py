@@ -10,11 +10,11 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     #This is the user email, and it will be unique to avoid duplicates
     email = Column(String, unique=True, nullable=False, index = True)
-    #We save the password as a hash
+    #We save the password as a hash hash
     hashed_password = Column(String, nullable=False)
 
     budget_members = relationship(
         "BudgetMember",
         back_populates="user",
         cascade="all, delete"
-    )
+    )  
