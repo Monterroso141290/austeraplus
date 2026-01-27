@@ -11,5 +11,5 @@ class BudgetMember(Base):
     budget_id = Column(Integer, ForeignKey("budgets.id"), nullable=False)
 
     #Relationships
-    user = relationship("User", back_populates="budget_members")
+    user = relationship("User", back_populates="budgets")
     budget = relationship("Budget", back_populates="members")

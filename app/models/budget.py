@@ -22,3 +22,8 @@ class Budget(Base):
         back_populates="budget",
         cascade="all, delete"
     )
+
+    transactions = relationship(
+        "Transaction",
+        back_populates="budget",
+    )
