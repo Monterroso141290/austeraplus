@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from app.database import engine, Base
 from app.models.expense import Expense
 from app.routers import expenses, auth
+from app import models
 
 app = FastAPI(title ="AusteraPlus API")
 

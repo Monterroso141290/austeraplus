@@ -9,4 +9,6 @@ class Category(Base):
     name = Column(String, nullable=False)
     budget_id = Column(Integer, ForeignKey("budgets.id"))
 
+    budget_id = Column(Integer, ForeignKey("budgets.id"))
+
     budget = relationship("Budget", back_populates="categories")

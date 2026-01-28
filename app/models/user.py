@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from app.database import Base
 
 #User table in the database
@@ -20,3 +21,5 @@ class User(Base):
         back_populates="user",
         cascade="all, delete"
     )  
+
+    owned_budgets = relationship("Budget", back_populates="owner")
