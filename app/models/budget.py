@@ -13,3 +13,4 @@ class Budget(Base):
     owner = relationship("User", back_populates="owned_budgets")
     categories = relationship("Category", back_populates="budget")
     transactions = relationship("Transaction", back_populates="budget")
+    members = relationship("BudgetMember", back_populates="budget", cascade="all, delete")

@@ -8,13 +8,11 @@ class Transaction(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     amount = Column(Float, nullable = False)
-    description = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    type = Column(String, nullable = False)
+    description = Column(String, nullable=True)
 
-    user_id = Column(Integer, ForeignKey("users.id"))
-    budget_id = Column(Integer, ForeignKey("budgets.id"))
-    category_id = Column(Integer, ForeignKey("categories.id"))
-    created_by = Column(Integer, ForeignKey("users.id"))
+    budget_id = Column(Integer, ForeignKey("budgets.id"), nullable=False)
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
 
     budget = relationship("Budget", back_populates="transactions")
-    category = relationship("Category")
+    category = relationship("Category", back_populates="transactions")
