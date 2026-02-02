@@ -14,12 +14,10 @@ class User(Base):
     #We save the password as a hash hash
     hashed_password = Column(String, nullable=False)
 
-    budgets = relationship("BudgetMember", back_populates="user")
-
     budget_members = relationship(
         "BudgetMember",
         back_populates="user",
         cascade="all, delete"
-    )  
+    )
 
     owned_budgets = relationship("Budget", back_populates="owner")
