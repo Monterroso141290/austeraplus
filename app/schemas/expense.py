@@ -1,4 +1,6 @@
 from pydantic import BaseModel, EmailStr
+from typing import Optional
+from datetime import datetime
 
 # We will define the fields that a "expense" will always need to have
 
@@ -10,7 +12,19 @@ class ExpenseBase(BaseModel):
 #This schema will be used when the user SENDS new data to the API to create an expense,
 #so basically, the data from ExpenseBase (title, amount and category)
 class ExpenseCreate(ExpenseBase):
-    pass #Everything is inherited from ExpenseBase
+    amount: float
+    description: Optional[str] = None
+    budget_id: int
+    category_id: Optional[int] = None
+
+class ExpenseResponse(ExpenseBase):
+    id: int
+    amount: float
+    description: Optional[str]
+    budget_id: int
+    category_id: Optional[int]
+    user_id: int
+    created_at: datetime
 
 class Expense(ExpenseBase):
     id: int 

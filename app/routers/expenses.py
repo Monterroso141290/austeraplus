@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.dependencies import get_current_user
+from app.models.user import User
 from app.schemas.expense import Expense, ExpenseCreate
 from app.crud.expense import ( get_expenses, create_expense, get_expense_by_id, delete_expense)
 
@@ -17,8 +19,19 @@ def read_expenses(db: Session = Depends(get_db)):
 
 #Postr the /expenses
 @router.post("/", response_model=Expense)
-def create_new_expense(expense: ExpenseCreate, db: Session = Depends(get_db)):
-    return create_expense(db, expense)
+def create_new_expense(expense: ExpenseCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    new_expense = Expense(
+        amount=expense.amount,
+        description=expense.description,
+        budget_id=expense.budget_id,
+        category_id=expense.category_id,
+        user_id=current_user.id
+    )
+
+    db.add(new_expense)
+    db.commit()
+    db.refresh(new_expense)
+    return new_expense
 
 #Get /expense/{id}
 @router.get("/{expense_id}", response_model=Expense)

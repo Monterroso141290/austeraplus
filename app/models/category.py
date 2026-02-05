@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.database import Base
+from app.db.base import Base
 
 class Category(Base):
     __tablename__ = "categories"
@@ -10,5 +10,5 @@ class Category(Base):
 
     budget_id = Column(Integer, ForeignKey("budgets.id"), nullable=False)
 
-    budget = relationship("Budget", back_populates="categories")
-    transactions = relationship("Transaction", back_populates="category", cascade="all, delete")
+    budget = relationship("Budget")
+    expenses = relationship("Expense", back_populates="category")
