@@ -14,7 +14,7 @@ class ExpenseBase(BaseModel):
 class ExpenseCreate(ExpenseBase):
     amount: float
     description: Optional[str] = None
-    budget_id: int
+    budget_id: Optional[int] = None
     category_id: Optional[int] = None
 
 class ExpenseResponse(ExpenseBase):

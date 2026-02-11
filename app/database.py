@@ -4,7 +4,8 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 DATABASE_URL = "sqlite:///./austera.db"
 
 engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
+    DATABASE_URL,
+    connect_args={"check_same_thread": False}
 )
 
 SessionLocal = sessionmaker(
@@ -13,6 +14,7 @@ SessionLocal = sessionmaker(
     bind=engine
 )
 
+# ✅ SINGLE Base
 Base = declarative_base()
 
 def get_db():
