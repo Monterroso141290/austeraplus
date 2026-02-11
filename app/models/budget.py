@@ -1,15 +1,29 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from app.db.base import Base
+from app.database import Base
+
 
 class Budget(Base):
     __tablename__ = "budgets"
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
 
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
-    owner = relationship("User", back_populates="owned_budgets")
-    expenses = relationship("Expense", back_populates="budget", cascade="all, delete-orphan")
+    owner = relationship(
+        "User",
+        back_populates="owned_budgets"
+    )
 
+    members = relationship(
+        "BudgetMember",
+        back_populates="budget",
+        cascade="all, delete-orphan"
+    )
+
+    expenses = relationship(
+        "Expense",
+        back_populates="budget",
+        cascade="all, delete-orphan"
+    )

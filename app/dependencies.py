@@ -1,19 +1,25 @@
-# app/dependencies.py
-
-from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
-
+from passlib.context import CryptContext
 from app.database import get_db
 from app.models.user import User
+from fastapi import Depends
 
-def get_current_user(db: Session = Depends(get_db)) -> User:
-    # TEMPORARY: return first user (for development only)
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)
+
+
+def get_current_user(db: Session = Depends(get_db)):
     user = db.query(User).first()
 
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated"
+        user = User(
+            email="dev@local",
+            hashed_password=get_password_hash("dev-password")
         )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
 
     return user
