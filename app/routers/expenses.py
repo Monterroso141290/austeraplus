@@ -27,13 +27,21 @@ def get_expenses(
 def create_expense(
     expense: ExpenseCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
 ):
-    db_expense = Expense(
-        **expense.dict(),
-        user_id=current_user.id
+    # 🔐 Verify user can access this budget
+    verify_budget_access(expense.budget_id, db, current_user)
+
+    new_expense = Expense(
+        amount=expense.amount,
+        description=expense.description,
+        category_id=expense.category_id,
+        budget_id=expense.budget_id,
+        user_id=current_user.id,
     )
-    db.add(db_expense)
+
+    db.add(new_expense)
     db.commit()
-    db.refresh(db_expense)
-    return db_expense
+    db.refresh(new_expense)
+
+    return new_expense
